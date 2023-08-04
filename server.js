@@ -1,4 +1,5 @@
 const express = require('express');
+const bcrypt = require('bcrypt-nodejs');
 
 const app = express();
 app.use(express.json())
@@ -25,26 +26,29 @@ app.get('/', (req, res) => {
 })
 
 app.post('/signin', (req, res) => {
-    if (req.body.email === database.users[0].email &&
-        req.body.password === database.users[0].password){
-            res.json('success');
-    } else {
-        res.status(400).json('error logging in');
+    const { email, password } = req.body;
+    if (email === database.users[1].email && bcrypt.compareSync(password, database.users[1].password)){
+        res.json('success');
     }
+    else {
+        res.status(400).json('error logging in');
+    }   
 
 })
 
 app.post('/register', (req, res) => {
     const { name, email, password } = req.body;
-    database.users.push({
-        id: '122',
-        name: name,
-        email: email,
-        password: password,
-        entries: 0,
-        joined: new Date()
+    bcrypt.hash(password, null, null, function(err, hash) {
+        database.users.push({
+            id: '122',
+            name: name,
+            email: email,
+            password: hash,
+            entries: 0,
+            joined: new Date()
+        }); 
+        res.send(database.users[database.users.length-1]);
     });
-    res.send(database.users[database.users.length-1]);
 })
 
 app.get('/profile/:id', (req, res) => {
