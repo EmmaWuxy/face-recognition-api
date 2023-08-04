@@ -21,7 +21,7 @@ app.listen(3000, ()=>{
 })
 
 app.get('/', (req, res) => {
-    res.send('homepage');
+    res.send(database.users);
 })
 
 app.post('/signin', (req, res) => {
@@ -32,6 +32,19 @@ app.post('/signin', (req, res) => {
         res.status(400).json('error logging in');
     }
 
+})
+
+app.post('/register', (req, res) => {
+    const { name, email, password } = req.body;
+    database.users.push({
+        id: '122',
+        name: name,
+        email: email,
+        password: password,
+        entries: 0,
+        joined: new Date()
+    });
+    res.send(database.users[database.users.length-1]);
 })
 
 /*
