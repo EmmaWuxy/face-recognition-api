@@ -47,6 +47,17 @@ app.post('/register', (req, res) => {
     res.send(database.users[database.users.length-1]);
 })
 
+app.get('/profile/:userId', (req, res) => {
+    const { userId } = req.params;
+    const user = database.users.find((user) => user.id === userId);
+    if (user){
+        res.json(user);
+    }
+    else{
+        res.status(400).json('user not found');
+    }
+})
+
 /*
 / --> res = homepage
 /signin --> POST = success/fail
