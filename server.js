@@ -47,9 +47,9 @@ app.post('/register', (req, res) => {
     res.send(database.users[database.users.length-1]);
 })
 
-app.get('/profile/:userId', (req, res) => {
-    const { userId } = req.params;
-    const user = database.users.find((user) => user.id === userId);
+app.get('/profile/:id', (req, res) => {
+    const { id } = req.params;
+    const user = database.users.find((user) => user.id === id);
     if (user){
         res.json(user);
     }
