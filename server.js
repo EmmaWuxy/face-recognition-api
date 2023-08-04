@@ -58,10 +58,14 @@ app.get('/profile/:userId', (req, res) => {
     }
 })
 
-/*
-/ --> res = homepage
-/signin --> POST = success/fail
-/register --> POST = user
-/profile/:userId --> GET = user
-/image --> PUT --> user
-*/
+app.put('/image', (req, res) => {
+    const {id} = req.body;
+    const user = database.users.find((user) => user.id === id);
+    if (user){
+        user.entries++;
+        res.json(user.entries);
+    }
+    else{
+        res.status(400).json('user not found');
+    }
+})
