@@ -30,7 +30,7 @@ app.get('/', (req, res) => {
 app.post('/signin', (req, res) => {
     const { email, password } = req.body;
     if (email === database.users[1].email && bcrypt.compareSync(password, database.users[1].password)){
-        res.json('success');
+        res.json(database.users[1]);
     }
     else {
         res.status(400).json('error logging in');
@@ -42,7 +42,7 @@ app.post('/register', (req, res) => {
     const { name, email, password } = req.body;
     bcrypt.hash(password, null, null, function(err, hash) {
         database.users.push({
-            id: '122',
+            id: database.users.length,
             name: name,
             email: email,
             password: hash,
