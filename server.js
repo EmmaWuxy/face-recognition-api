@@ -16,19 +16,6 @@ const app = express();
 app.use(express.json())
 app.use(cors());
 
-const database = {
-    users: [
-        {
-            id: '123',
-            name: 'emma',
-            email: 'emma@gmail.com',
-            password: 'cookies',
-            entries: 0,
-            joined: new Date()
-        }
-    ]
-}
-
 app.listen(3000, ()=>{
     console.log('app is running on port 3000');
 })
@@ -69,13 +56,17 @@ app.post('/register', (req, res) => {
 
 app.get('/profile/:id', (req, res) => {
     const { id } = req.params;
-    const user = database.users.find((user) => user.id === id);
-    if (user){
-        res.json(user);
-    }
-    else{
-        res.status(400).json('user not found');
-    }
+    db('users').where({id}).select('*')
+        .then(user => {
+            if (user.length){
+                res.json(user[0]);
+            }
+            else{
+                res.status(400).json('user not found');
+            }
+        })
+        .catch(err => res.status(400).json('error getting user'));
+    
 })
 
 app.put('/image', (req, res) => {
