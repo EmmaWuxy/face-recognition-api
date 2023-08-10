@@ -71,12 +71,15 @@ app.get('/profile/:id', (req, res) => {
 
 app.put('/image', (req, res) => {
     const {id} = req.body;
-    const user = database.users.find((user) => user.id === id);
-    if (user){
-        user.entries++;
-        res.json(user.entries);
-    }
-    else{
-        res.status(400).json('user not found');
-    }
+    db('users').where({id}).increment('entries', 1)
+        .then(isSuccess => {
+            if (isSuccess){
+                db('users').where({id}).select('entries')
+                    .then(entries => res.json(entries[0]))
+            }
+            else{
+                res.status(400).json('unable to get entries')
+            }
+        })
+        .catch(err => res.status(400).json('unable to get entries'));
 })
