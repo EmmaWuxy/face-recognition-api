@@ -1,6 +1,16 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
+const db = require('knex')({
+    client: 'mysql',
+    connection: {
+      host : '127.0.0.1',
+      port : 3306,
+      user : 'emmam',
+      password : 'wwj776677',
+      database : 'face-recognition'
+    }
+  });
 
 const app = express();
 app.use(express.json())
@@ -41,15 +51,19 @@ app.post('/signin', (req, res) => {
 app.post('/register', (req, res) => {
     const { name, email, password } = req.body;
     bcrypt.hash(password, null, null, function(err, hash) {
-        database.users.push({
-            id: database.users.length,
+        db.insert({
             name: name,
             email: email,
-            password: hash,
-            entries: 0,
             joined: new Date()
-        }); 
-        res.send(database.users[database.users.length-1]);
+        })
+        .into('users')
+        .then(userId => 
+            db('users')
+            .where('id', userId[0])
+            .select('name', 'email', 'entries', 'joined')
+            .then(user => res.json(user[0]))
+        )
+        .catch(err => res.status(400).json('unable to register'));
     });
 })
 
