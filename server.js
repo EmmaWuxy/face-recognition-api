@@ -26,13 +26,21 @@ app.get('/', (req, res) => {
 
 app.post('/signin', (req, res) => {
     const { email, password } = req.body;
-    // if (email === database.users[1].email && bcrypt.compareSync(password, database.users[1].password)){
-    //     res.json(database.users[1]);
-    // }
-    // else {
-    //     res.status(400).json('error logging in');
-    // } 
-
+    db('login').where({ email })
+        .select('hash')
+        .then(logInData => {
+            if (bcrypt.compareSync(password, logInData[0].hash)) {
+                // retrieve user info
+                db('users')
+                    .where('email', email)
+                    .select('id', 'name', 'email', 'entries', 'joined')
+                    .then(user => res.json(user[0]))
+            }
+            else {
+                res.status(400).json('sign in password incorrect')
+            }
+        })
+        .catch(err => res.status(400).json("login error"))
 
 })
 
@@ -44,7 +52,7 @@ app.post('/register', (req, res) => {
         db.insert({
             email: email,
             hash: hash
-            })
+        })
             .into('login')
             .transacting(trx)
             .then(signinId => {
@@ -60,15 +68,15 @@ app.post('/register', (req, res) => {
                         // pass the registered user info back to frontend
                         return db('users')
                             .where('id', userId[0])
-                            .select('id','name', 'email', 'entries', 'joined')
+                            .select('id', 'name', 'email', 'entries', 'joined')
                             .transacting(trx);
                     })
             })
             .then(trx.commit)
             .catch(trx.rollback);
     })
-    .then(user => res.json(user[0]))
-    .catch(err => res.status(400).json('unable to register'));
+        .then(user => res.json(user[0]))
+        .catch(err => res.status(400).json('unable to register'));
 })
 
 app.get('/profile/:id', (req, res) => {
