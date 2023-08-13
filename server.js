@@ -20,11 +20,11 @@ app.listen(3000, () => {
     console.log('app is running on port 3000');
 })
 
-app.get('/', (req, res) => {
-    res.send(database.users);
-})
+// app.get('/', (req, res) => {
+//     res.send(database.users);
+// })
 
-app.post('/signin', (req, res) => {
+app.post('/login', (req, res) => {
     const { email, password } = req.body;
     db('login').where({ email })
         .select('hash')
