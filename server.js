@@ -37,7 +37,7 @@ app.post('/login', (req, res) => {
                     .then(user => res.json(user[0]))
             }
             else {
-                res.status(400).json('sign in password incorrect')
+                res.status(400).json('log in password incorrect')
             }
         })
         .catch(err => res.status(400).json("login error"))
