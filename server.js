@@ -31,3 +31,4 @@ app.post('/login', login.handleLogin(db, bcrypt));
 app.post('/register', register.handleRegister(db, bcrypt));
 app.get('/profile/:id', profile.handleProfileGet(db));
 app.put('/image', image.handleImage(db));
+app.post('/imageDetect', image.handleImageDetection);
