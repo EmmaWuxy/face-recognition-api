@@ -27,7 +27,7 @@ app.listen(3000, () => {
 })
 
 // Routing Table
-app.post('/login', login.handleSignin(db, bcrypt));
+app.post('/login', login.handleLogin(db, bcrypt));
 app.post('/register', register.handleRegister(db, bcrypt));
 app.get('/profile/:id', profile.handleProfileGet(db));
 app.put('/image', image.handleImage(db));
