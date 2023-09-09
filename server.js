@@ -14,7 +14,7 @@ const db = require('knex')({
         port: 3306,
         user: 'emmam',
         password: 'wwj776677',
-        database: 'face-recognition'
+        database: 'face_rec'
     }
 });
 
