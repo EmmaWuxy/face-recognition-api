@@ -1,6 +1,6 @@
-DROP DATABASE IF EXISTS face-recognition;
-CREATE DATABASE IF NOT EXISTS face-recognition;
-USE face-recognition;
+DROP DATABASE IF EXISTS face_rec;
+CREATE DATABASE IF NOT EXISTS face_rec;
+USE face_rec;
 
 CREATE TABLE users (
     id serial PRIMARY KEY,
