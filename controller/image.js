@@ -1,11 +1,4 @@
-// Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = 'ba7a7543d94744c28a3c51b1af4c7bf8';
-// Specify the correct user_id/app_id pairings
-// Since you're making inferences outside your app's scope
-const USER_ID = 'emmawxy';
-const APP_ID = 'face-detection';
-const MODEL_ID = 'face-detection';
-
+const { PAT, USER_ID, APP_ID, MODEL_ID } = require('../config')
 
 const handleImageDetection = (req, res) => {
     const { imageUrl } = req.body;
@@ -27,16 +20,16 @@ const handleImageDetection = (req, res) => {
     const requestOptions = {
         method: 'POST',
         headers: {
-          'Accept': 'application/json',
-          'Authorization': 'Key ' + PAT
+            'Accept': 'application/json',
+            'Authorization': 'Key ' + PAT
         },
         body: raw
-      };
+    };
 
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/outputs", requestOptions)
-      .then(response => response.json())
-      .then(data => res.json(data))
-      .catch(err => res.status(400).json('clarifai api error'));
+    fetch(`https://api.clarifai.com/v2/models/${MODEL_ID}/outputs`, requestOptions)
+        .then(response => response.json())
+        .then(data => res.json(data))
+        .catch(err => res.status(400).json('clarifai api error'));
 }
 
 const handleImage = (db) => (req, res) => {

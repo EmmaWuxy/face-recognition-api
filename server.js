@@ -1,6 +1,7 @@
 const express = require('express');
 const bcrypt = require('bcrypt-nodejs');
 const cors = require('cors');
+const { HOST, PORT, USER, PASSWORD, DB_NAME } = require('./config')
 
 const login = require('./controller/login');
 const register = require('./controller/register');
@@ -10,11 +11,11 @@ const image = require('./controller/image');
 const db = require('knex')({
     client: 'mysql',
     connection: {
-        host: '127.0.0.1',
-        port: 3306,
-        user: 'emmam',
-        password: 'wwj776677',
-        database: 'face_rec'
+        host: HOST,
+        port: PORT,
+        user: USER,
+        password: PASSWORD,
+        database: DB_NAME
     }
 });
 
